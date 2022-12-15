@@ -13,7 +13,7 @@ var userRef=db.ref("data");
 
 const userOperation={
     addUser(obj,res){
-        var oneUser=userRef.child(obj.roll);
+        var oneUser=userRef.child(obj.id);
         oneUser.update(obj,(err)=>{
             if(err){
                 res.status(300).json({"msg":"Something went wrong","error":err});
@@ -38,20 +38,23 @@ const userOperation={
     getUsers(res){
         userRef.once('value',function(snap){
             var arr = [];
-            for(var i = 0; i<snap.val().length; i++)
-            {
-                if(snap.val()[i]!=null && snap.val()[i]!=undefined && snap.val()[i]!='')
-                {
-                    console.log(snap.val()[i])
-                    arr.push(snap.val()[i]);
-                }
-            }
-            res.status(200).json({"users":arr});
+            // for(var i = 0; i<snap.val().length; i++)
+            // {
+            //     if(snap.val()[i]!=null && snap.val()[i]!=undefined && snap.val()[i]!='')
+            //     {
+            //         console.log(snap.val()[i])
+            //         arr.push(snap.val()[i]);
+            //     }
+            // }
+            // arr = snap.val()
+            // const propertyNames = Object.keys(snap.val());
+            // console.log(propertyNames);
+            res.status(200).json({"users":snap.val()});
         })
     },
     getOneUser(obj,res){
         var userRefdemo=db.ref("users");
-        var oneUser=userRefdemo.child(obj.roll);
+        var oneUser=userRefdemo.child(obj.document);
         oneUser.once('value',function(snap){
             res.status(200).json({"user":snap.val()});
         })
